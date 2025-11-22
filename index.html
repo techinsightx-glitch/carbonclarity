@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CarbonClarity 2025 - Real Carbon Footprint Calculator</title>
+<meta name="description" content="Calculate your exact 2025 carbon footprint with real-time data. Electricity, flights, car, diet, waste & more. Get personalized tips + tree offset calculator. 100% free." />
+<meta content='https://carbonclarity.online/favicon.ico' name='twitter:image'/>
+  <link href='https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEglYezDr38PQIqu1wKJB6PWf3w4W8h7Tfri30UqTNbHygp7YLCjiw2ikmlDel8IYMGaKl5ZlYXzm_YLQZVxuQPNz57dKbXTuz00wAX4NNs1xs5ERzKoIxjdwzjgAScjSg-GX-VnnQrNf3dhvr0J2HKHtyqB8HlQbLfSsvt7cGh1-lf8pspR8IEjzHIPnye_/s192/android-chrome-192x192.png' rel='icon' type='image/x-icon'/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@800;900&family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at top, #0f172a, #020617);
+      background-attachment: fixed;
+      color: white;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem;
+      overflow-x: hidden;
+    }
+    .container {
+      width: 100%;
+      max-width: 460px;
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: 2.5rem;
+      padding: 2.5rem 2rem;
+      margin: 1rem auto;
+      box-shadow: 0 0 70px rgba(34, 211, 238, 0.5);
+      border: 2px solid rgba(34, 211, 238, 0.4);
+      backdrop-filter: blur(16px);
+      position: relative;
+      overflow: hidden;
+    }
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, #22d3ee, #4ade80);
+      box-shadow: 0 0 20px #22d3ee;
+    }
+
+    /* HEADER */
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .header h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(3.2rem, 10vw, 6.5rem);
+      font-weight: 900;
+      line-height: 0.9;
+      letter-spacing: -2px;
+      background: linear-gradient(90deg, #22d3ee, #67e8f9, #86efac);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 40px rgba(34, 211, 238, 0.7);
+      margin: 0;
+    }
+    .header p {
+      color: #94a3b8;
+      font-size: 1rem;
+      margin-top: 0.5rem;
+      font-weight: 600;
+    }
+    .glow-line {
+      height: 4px;
+      background: linear-gradient(90deg, transparent, #22d3ee, #4ade80, transparent);
+      width: 70%;
+      margin: 1.5rem auto;
+      border-radius: 2px;
+      box-shadow: 0 0 25px #22d3ee;
+      animation: glowflow 4s infinite;
+    }
+    @keyframes glowflow {
+      0%,100% { transform: translateX(-100%); opacity: 0.8; }
+      50% { transform: translateX(100%); opacity: 1; }
+    }
+
+    label {
+      color: #e0f2fe;
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin-top: 1.5rem;
+      display: block;
+    }
+    input[type=number] {
+      width: 100%;
+      background: rgba(15, 40, 70, 0.7);
+      border: 2px solid #22d3ee;
+      border-radius: 1.8rem;
+      padding: 1rem;
+      margin-top: 0.5rem;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #a5f3fc;
+      text-align: center;
+      outline: none;
+      transition: all 0.3s;
+      backdrop-filter: blur(8px);
+    }
+    input:focus {
+      border-color: #4ade80;
+      box-shadow: 0 0 25px rgba(74, 222, 128, 0.6);
+      transform: scale(1.02);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 1.3rem;
+      margin-top: 2rem;
+      border: none;
+      border-radius: 3rem;
+      font-size: 1.6rem;
+      font-weight: 900;
+      cursor: pointer;
+      background: linear-gradient(90deg, #22d3ee, #4ade80);
+      color: black;
+      box-shadow: 0 10px 30px rgba(34, 211, 238, 0.5);
+      transition: all 0.4s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .btn:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(74, 222, 128, 0.6); }
+    .reset-btn { background: linear-gradient(90deg, #f97316, #ef4444); margin-top: 1rem; }
+
+    #results { margin-top: 3rem; background: linear-gradient(135deg, #164e63, #0c4a6e); border-radius: 2.5rem; padding: 2.5rem 2rem; text-align: center; border: 1px solid rgba(34, 211, 238, 0.3); box-shadow: 0 0 50px rgba(34, 211, 238, 0.3); }
+    #totalEmission { font-size: 4rem; font-weight: 900; color: #86efac; text-shadow: 0 0 20px #22d3ee; margin: 1rem 0; }
+    #breakdown p { background: rgba(34, 211, 238, 0.1); padding: 0.8rem; border-radius: 1rem; margin: 0.6rem 0; font-size: 1.1rem; }
+
+    .charts-container { display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin: 2rem 0; }
+    canvas { background: #0f172a; border-radius: 1.5rem; padding: 1rem; box-shadow: 0 0 20px rgba(34, 211, 238, 0.3); }
+
+    .footer-info {
+      margin-top: 4rem;
+      padding: 2rem;
+      background: rgba(0,0,0,0.4);
+      border-radius: 2rem;
+      border: 1px solid rgba(34, 211, 238, 0.2);
+      text-align: justify;
+      line-height: 1.9;
+      font-size: 1rem;
+      color: #cbd5e1;
+    }
+    .footer-info h3 {
+      text-align: center;
+      font-size: 1.6rem;
+      color: #86efac;
+      margin-bottom: 1rem;
+      font-weight: 900;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <h1>CARBON<br>CLARITY</h1>
+      <p>2025 — Real-Time Carbon Calculator</p>
+      <div class="glow-line"></div>
+    </div>
+
+    <p class="text-center text-cyan-200 text-lg font-medium leading-relaxed mb-8">
+      Calculate your real carbon footprint with accurate data & get personalized tips to reduce it.
+    </p>
+
+    <form id="carbonForm" onsubmit="event.preventDefault(); calculateCarbon();">
+      <label>Electricity Usage (kWh/month)</label>
+      <input type="number" id="electricity" value="300" min="0" required />
+
+      <labelafa label>Car Travel (km/week)</label>
+      <input type="number" id="carKm" value="150" min="0" required />
+
+      <label>Short Flights annually (&lt;4 hrs)</label>
+      <input type="number" id="flights" value="2" min="0" required />
+
+      <label>Waste Generated (kg/week)</label>
+      <input type="number" id="waste" value="5" step="0.1" min="0" required />
+
+      <label>Meat Meals per Week</label>
+      <input type="number" id="meatMeals" value="7" min="0" required />
+
+      <button type="submit" class="btn">Calculate Footprint</button>
+      <button type="button" onclick="resetForm()" class="btn reset-btn">Reset All</button>
+    </form>
+
+    <div id="results" class="hidden">
+      <h2 class="text-2xl font-bold text-cyan-300 mb-4">Your Annual Carbon Footprint</h2>
+      <div id="totalEmission">0.00 tons</div>
+      <div id="breakdown" class="my-6"></div>
+      <div class="charts-container">
+        <canvas id="barChart"></canvas>
+        <canvas id="pieChart"></canvas>
+      </div>
+      <div id="suggestions" class="text-left mt-6"></div>
+    </div>
+
+    <!-- YE HAI AAPKA 100% ORIGINAL VALUABLE CONTENT - FULL RESTORED -->
+    <div class="footer-info">
+      <h3>Why Carbon Footprint Matters</h3>
+      <p>
+        Greenhouse gases such as CO₂ trap heat in the atmosphere, contributing to <strong>global warming</strong> — the long-term rise in Earth's average temperature. This warming results in more extreme weather, rising sea levels, and ecosystem disruption.
+      </p>
+      <p class="mt-4">
+        By understanding your <strong>carbon footprint</strong> — the total greenhouse gas emissions caused directly or indirectly by your actions — you can take steps to reduce your personal impact.
+      </p>
+      <p class="mt-4">
+        Actions like using renewable energy, reducing car travel, minimizing flights, managing waste effectively, and eating fewer meat meals contribute substantially to lowering emissions. <strong>Every ton of CO₂ you reduce helps slow down climate change and protects the planet for future generations.</strong>
+      </p>
+      <p class="mt-5 text-center font-bold text-emerald-300 text-lg">
+        The future is in your hands. Start today.
+      </p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const f = { electricity: 0.000233, car: 0.00021, flight: 0.15, waste: 0.031, meatMeal: 0.04 };
+    let barChart, pieChart;
+
+    function calculateCarbon() {
+      const e = +document.getElementById('electricity').value || 0;
+      const c = +document.getElementById('carKm').value || 0;
+      const fl = +document.getElementById('flights').value || 0;
+      const w = +document.getElementById('waste').value || 0;
+      const m = +document.getElementById('meatMeals').value || 0;
+
+      const elec = e * 12 * f.electricity;
+      const car = c * 52 * f.car;
+      const flight = fl * f.flight;
+      const waste = w * 52 * f.waste;
+      const meat = m * 52 * f.meatMeal;
+      const total = elec + car + flight + waste + meat;
+
+      document.getElementById('totalEmission').textContent = total.toFixed(2) + " tons";
+
+      document.getElementById('breakdown').innerHTML = `
+        <p>Electricity: <strong>${elec.toFixed(2)} t</strong></p>
+        <p>Car Travel: <strong>${car.toFixed(2)} t</strong></p>
+        <p>Flights: <strong>${flight.toFixed(2)} t</strong></p>
+        <p>Waste: <strong>${waste.toFixed(2)} t</strong></p>
+        <p>Meat Consumption: <strong>${meat.toFixed(2)} t</strong></p>
+      `;
+
+      const labels = ['Electricity', 'Car', 'Flights', 'Waste', 'Meat'];
+      const data = [elec, car, flight, waste, meat];
+      const colors = ['#34D399', '#60A5FA', '#FBBF24', '#F87171', '#C084FC'];
+
+      if (barChart) barChart.destroy();
+      if (pieChart) pieChart.destroy();
+
+      barChart = new Chart(document.getElementById('barChart'), {
+        type: 'bar',
+        data: { labels, datasets: [{ data, backgroundColor: colors }] },
+        options: { responsive: true, plugins: { title: { display: true, text: 'Breakdown (tons CO₂e)', color: '#22d3ee', font: { size: 16 }}} }
+      });
+
+      pieChart = new Chart(document.getElementById('pieChart'), {
+        type: 'doughnut',
+        data: { labels, datasets: [{ data, backgroundColor: colors, borderColor: '#0f172a', borderWidth: 3 }] },
+        options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: '#e2e8f0' }}} }
+      });
+
+      const tips = [];
+      if (meat > 2) tips.push("Try 3 meat-free days/week — saves over 1 ton/year!");
+      if (fl > 1) tips.push("One less flight = massive difference.");
+      if (car > 8) tips.push("Electric vehicle or public transport can cut this by 90%+.");
+      if (elec > 3) tips.push("Switch to solar/LEDs/green energy provider.");
+      if (waste > 1) tips.push("Compost organics & recycle properly.");
+      if (tips.length === 0) tips.push("Outstanding! You're already a climate champion!");
+
+      document.getElementById('suggestions').innerHTML = "<div class='text-xl font-bold text-cyan-300 mb-4'>Your Personalized Tips</div>" +
+        tips.map(t => `<div style='background:rgba(34,211,238,0.15);padding:1rem;border-radius:1rem;margin:0.8rem 0;border-left:4px solid #22d3ee;'>${t}</div>`).join('');
+
+      document.getElementById('results').classList.remove('hidden');
+      document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function resetForm() {
+      document.getElementById('carbonForm').reset();
+      document.getElementById('results').classList.add('hidden');
+      if (barChart) barChart.destroy();
+      if (pieChart) pieChart.destroy();
+      barChart = pieChart = null;
+    }
+  </script>
+</body>
+  </html>
+  
